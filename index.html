@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Phone Store - Choose Your Brand</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -18,6 +18,7 @@
             transition: background-color 0.3s ease;
             overflow-x: hidden;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .theme-bg { background-color: var(--primary-color) !important; }
@@ -29,7 +30,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 450px;
+            height: 400px;
             position: relative;
             width: 100vw;
             perspective: 1200px;
@@ -40,26 +41,29 @@
         .brand-card {
             position: absolute;
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            width: 260px;
-            height: 340px;
+            width: 220px;
+            height: 300px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             background: white;
-            border-radius: 2.5rem;
+            border-radius: 2rem;
             box-shadow: 0 10px 30px -5px rgba(0,0,0,0.08);
             pointer-events: auto;
             overflow: hidden;
-            padding: 20px;
+            padding: 15px;
             border: 1px solid #f1f5f9;
         }
 
+        @media (min-width: 768px) {
+            .brand-card { width: 260px; height: 340px; }
+        }
+
         .brand-logo-img {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
-            transition: transform 0.3s ease;
         }
 
         .brand-card.active {
@@ -72,57 +76,41 @@
         }
 
         .brand-card.prev {
-            transform: translate3d(-115%, 0, 0) scale(0.8) rotateY(25deg);
-            opacity: 0.4;
+            transform: translate3d(-100%, 0, 0) scale(0.7) rotateY(20deg);
+            opacity: 0.3;
             filter: grayscale(100%);
             z-index: 20;
         }
 
         .brand-card.next {
-            transform: translate3d(115%, 0, 0) scale(0.8) rotateY(-25deg);
-            opacity: 0.4;
+            transform: translate3d(100%, 0, 0) scale(0.7) rotateY(-20deg);
+            opacity: 0.3;
             filter: grayscale(100%);
             z-index: 20;
         }
 
-        .brand-card.hidden-left { transform: translate3d(-250%, 0, -100px) scale(0.5); opacity: 0; z-index: 10; }
-        .brand-card.hidden-right { transform: translate3d(250%, 0, -100px) scale(0.5); opacity: 0; z-index: 10; }
-
-        .phone-img-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .brand-card.hidden-left { transform: translate3d(-200%, 0, -100px) scale(0.5); opacity: 0; }
+        .brand-card.hidden-right { transform: translate3d(200%, 0, -100px) scale(0.5); opacity: 0; }
 
         .phone-display-img {
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         .modal-blur {
             backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
         }
 
-        /* Improved Delivery Animations */
+        /* Delivery Animations */
         @keyframes drawPath {
             0% { stroke-dashoffset: 1200; }
             100% { stroke-dashoffset: 0; }
         }
-        
-        .path-line {
-            stroke-dasharray: 1200;
-            stroke-dashoffset: 1200;
-        }
-        
-        .animate-path {
-            animation: drawPath 4s ease-in-out forwards;
-        }
+        .path-line { stroke-dasharray: 1200; stroke-dashoffset: 1200; }
+        .animate-path { animation: drawPath 4s ease-in-out forwards; }
 
         .van-on-path {
             offset-path: path("M50 350 L200 350 L200 150 L500 150 L500 300 L750 300");
@@ -132,19 +120,9 @@
             z-index: 40;
         }
 
-        @keyframes moveVan {
-            0% { offset-distance: 0%; }
-            100% { offset-distance: 100%; }
-        }
-
-        @keyframes pulseDestination {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-
-        .dest-pulse {
-            animation: pulseDestination 1.5s infinite;
-        }
+        @keyframes moveVan { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
+        @keyframes pulseDestination { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
+        .dest-pulse { animation: pulseDestination 1.5s infinite; }
 
         #settings-menu {
             transform: translateX(100%);
@@ -154,165 +132,151 @@
 
         .btn-bounce:active { transform: scale(0.9); }
 
-        .storage-btn {
-            transition: all 0.3s ease;
-        }
         .storage-btn.active {
             background-color: var(--primary-color) !important;
             color: white !important;
             border-color: var(--primary-color) !important;
         }
+
+        /* Prevent image overflow in modal */
+        #modal-image-container img {
+            max-height: 35vh;
+            width: auto;
+        }
+        @media (min-width: 768px) {
+            #modal-image-container img { max-height: 50vh; }
+        }
     </style>
 </head>
 <body>
 
-    <header id="main-header" class="theme-bg text-white py-6 text-center fixed top-0 w-full z-50 shadow-md">
-        <h1 id="header-title" class="text-xl font-black uppercase tracking-tighter">Choose Brand</h1>
+    <header id="main-header" class="theme-bg text-white py-4 md:py-6 text-center fixed top-0 w-full z-50 shadow-md">
+        <h1 id="header-title" class="text-lg md:text-xl font-black uppercase tracking-tighter">Choose Brand</h1>
     </header>
 
-    <main class="mt-20">
+    <main class="mt-16 md:mt-20">
         <!-- STEP 1: BRAND SELECTION -->
-        <section id="brand-selection" class="min-h-screen flex flex-col justify-center items-center overflow-hidden bg-white">
+        <section id="brand-selection" class="min-h-[90vh] flex flex-col justify-center items-center overflow-hidden bg-white">
             <div id="brand-slider-container"></div>
-            <div class="flex items-center gap-12 mt-4">
-                <button onclick="moveBrand(-1)" class="p-4 rounded-full bg-white border border-slate-100 shadow-sm hover:bg-slate-50 transition btn-bounce">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" /></svg>
+            <div class="flex items-center gap-8 md:gap-12 mt-4">
+                <button onclick="moveBrand(-1)" class="p-3 md:p-4 rounded-full bg-white border border-slate-100 shadow-sm hover:bg-slate-50 transition btn-bounce">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" /></svg>
                 </button>
-                <div class="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] animate-pulse">Swipe or click brand</div>
-                <button onclick="moveBrand(1)" class="p-4 rounded-full bg-white border border-slate-100 shadow-sm hover:bg-slate-50 transition btn-bounce">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
+                <div class="text-[9px] md:text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] animate-pulse">Swipe or click brand</div>
+                <button onclick="moveBrand(1)" class="p-3 md:p-4 rounded-full bg-white border border-slate-100 shadow-sm hover:bg-slate-50 transition btn-bounce">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
                 </button>
             </div>
         </section>
 
         <!-- STEP 2: PHONE CATALOG -->
-        <section id="phone-catalog" class="hidden px-6 pt-10 pb-20">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 max-w-[1600px] mx-auto"></div>
+        <section id="phone-catalog" class="hidden px-4 md:px-6 pt-6 md:pt-10 pb-20">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-8 max-w-[1600px] mx-auto"></div>
         </section>
 
         <!-- STEP 3: SUCCESS SCREEN -->
-        <section id="order-success" class="hidden flex flex-col items-center justify-center min-h-screen px-4 py-20">
+        <section id="order-success" class="hidden flex flex-col items-center justify-start md:justify-center min-h-screen px-4 pt-10 md:pt-20">
             <div class="max-w-4xl w-full">
-                <div class="text-center mb-10">
-                    <h2 class="text-5xl md:text-6xl font-black theme-text uppercase italic tracking-tighter mb-4">On the Way!</h2>
-                    <p class="text-slate-400 font-bold uppercase tracking-widest text-sm">We've received your order and the courier is moving</p>
+                <div class="text-center mb-6 md:mb-10">
+                    <h2 class="text-3xl md:text-6xl font-black theme-text uppercase italic tracking-tighter mb-2 md:mb-4">On the Way!</h2>
+                    <p class="text-slate-400 font-bold uppercase tracking-widest text-[9px] md:text-sm">Order confirmed & moving to you</p>
                 </div>
                 
                 <!-- Order Status Tabs -->
-                <div class="flex justify-between mb-8 px-4">
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="w-10 h-10 rounded-full theme-bg text-white flex items-center justify-center font-bold">✓</div>
-                        <span class="text-[10px] font-black text-slate-400 uppercase">Processed</span>
+                <div class="flex justify-between mb-6 md:mb-8 px-2 md:px-4">
+                    <div class="flex flex-col items-center gap-1 md:gap-2">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full theme-bg text-white flex items-center justify-center font-bold text-xs">✓</div>
+                        <span class="text-[8px] md:text-[10px] font-black text-slate-400 uppercase">Process</span>
                     </div>
-                    <div class="flex-1 h-[2px] bg-slate-100 mt-5 mx-2">
-                        <div class="h-full theme-bg w-full origin-left animate-[grow_1s_ease-out]"></div>
+                    <div class="flex-1 h-[2px] bg-slate-100 mt-4 md:mt-5 mx-1 md:mx-2">
+                        <div class="h-full theme-bg w-full origin-left"></div>
                     </div>
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="w-10 h-10 rounded-full theme-bg text-white flex items-center justify-center font-bold animate-pulse">🚚</div>
-                        <span class="text-[10px] font-black theme-text uppercase">Shipping</span>
+                    <div class="flex flex-col items-center gap-1 md:gap-2">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full theme-bg text-white flex items-center justify-center font-bold animate-pulse text-xs">🚚</div>
+                        <span class="text-[8px] md:text-[10px] font-black theme-text uppercase">Ship</span>
                     </div>
-                    <div class="flex-1 h-[2px] bg-slate-100 mt-5 mx-2"></div>
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-300 flex items-center justify-center font-bold">🏠</div>
-                        <span class="text-[10px] font-black text-slate-300 uppercase">Arrival</span>
+                    <div class="flex-1 h-[2px] bg-slate-100 mt-4 md:mt-5 mx-1 md:mx-2"></div>
+                    <div class="flex flex-col items-center gap-1 md:gap-2">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-100 text-slate-300 flex items-center justify-center font-bold text-xs">🏠</div>
+                        <span class="text-[8px] md:text-[10px] font-black text-slate-300 uppercase">Arrive</span>
                     </div>
                 </div>
 
                 <!-- Map Container -->
-                <div class="w-full aspect-[16/9] md:aspect-[21/9] bg-white rounded-[3rem] relative overflow-hidden shadow-2xl border-4 theme-border">
-                    <svg viewBox="0 0 800 450" class="w-full h-full bg-[#f8fafc]">
-                        <!-- Decorative streets -->
+                <div class="w-full aspect-video md:aspect-[21/9] bg-white rounded-[2rem] md:rounded-[3rem] relative overflow-hidden shadow-xl border-2 md:border-4 theme-border">
+                    <svg viewBox="0 0 800 450" class="w-full h-full bg-[#f8fafc]" preserveAspectRatio="xMidYMid slice">
                         <path d="M0 50 L800 50 M0 250 L800 250 M400 0 L400 450 M100 0 L100 450" stroke="#f1f5f9" stroke-width="40" fill="none" />
-                        
-                        <!-- Main Route Background -->
                         <path d="M50 350 L200 350 L200 150 L500 150 L500 300 L750 300" fill="none" stroke="#e2e8f0" stroke-width="34" stroke-linejoin="round" stroke-linecap="round" />
-                        
-                        <!-- Animated Route Path -->
                         <path id="delivery-path" class="path-line" d="M50 350 L200 350 L200 150 L500 150 L500 300 L750 300" fill="none" stroke="var(--primary-color)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
-                        
-                        <!-- Icons -->
-                        <g transform="translate(35, 335)">
-                            <rect width="40" height="40" rx="10" fill="white" shadow="0 2px 5px rgba(0,0,0,0.1)" />
-                            <text x="8" y="28" font-size="24">🏪</text>
-                        </g>
-                        
-                        <g transform="translate(735, 285)">
-                            <circle cx="15" cy="15" r="25" fill="var(--primary-color)" class="dest-pulse" />
-                            <circle cx="15" cy="15" r="10" fill="white" />
-                            <text x="3" y="23" font-size="24">🏠</text>
-                        </g>
-
-                        <!-- Courier Label -->
-                        <g id="courier-van" class="van-on-path">
-                            <rect x="-30" y="-45" width="60" height="30" rx="8" fill="white" shadow="0 4px 10px rgba(0,0,0,0.2)" />
-                            <text x="-22" y="-23" font-size="20">🚚</text>
-                        </g>
+                        <g transform="translate(35, 335)"><rect width="40" height="40" rx="10" fill="white" /><text x="8" y="28" font-size="24">🏪</text></g>
+                        <g transform="translate(735, 285)"><circle cx="15" cy="15" r="25" fill="var(--primary-color)" class="dest-pulse" /><circle cx="15" cy="15" r="10" fill="white" /><text x="3" y="23" font-size="24">🏠</text></g>
+                        <g id="courier-van" class="van-on-path"><rect x="-30" y="-45" width="60" height="30" rx="8" fill="white" shadow="0 4px 10px rgba(0,0,0,0.2)" /><text x="-22" y="-23" font-size="20">🚚</text></g>
                     </svg>
                 </div>
 
-                <div class="mt-12 flex flex-col md:flex-row items-center justify-between gap-6 bg-slate-50 p-8 rounded-[2rem]">
+                <div class="mt-6 md:mt-12 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 bg-slate-50 p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem]">
                     <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center text-2xl shadow-sm">📦</div>
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center text-xl md:text-2xl shadow-sm">📦</div>
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Est. Delivery</p>
-                            <p class="text-xl font-black text-slate-800 tracking-tighter">12 - 24 Hours</p>
+                            <p class="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">Est. Delivery</p>
+                            <p class="text-lg md:text-xl font-black text-slate-800 tracking-tighter">12 - 24 Hours</p>
                         </div>
                     </div>
-                    <button onclick="resetApp()" class="px-10 py-4 theme-bg text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg">Start New Order</button>
+                    <button onclick="resetApp()" class="w-full md:w-auto px-10 py-4 theme-bg text-white rounded-xl md:rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg">Back to Store</button>
                 </div>
             </div>
         </section>
     </main>
 
     <!-- MODAL -->
-    <div id="order-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div id="order-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-2 md:p-4">
         <div class="absolute inset-0 modal-blur" onclick="closeModal()"></div>
-        <div class="bg-white w-full max-w-5xl rounded-[4rem] shadow-2xl relative z-10 overflow-hidden flex flex-col md:flex-row border-4 theme-border h-fit max-h-[95vh]">
-            <div class="w-full md:w-1/2 p-12 flex flex-col items-center justify-center bg-white relative min-h-[400px] border-r border-slate-50">
-                <div id="modal-image-container" class="phone-img-container transition-all duration-500 transform scale-110"></div>
-                <h3 id="modal-phone-name" class="mt-12 text-3xl font-black text-center tracking-tighter uppercase italic"></h3>
+        <div class="bg-white w-full max-w-5xl rounded-[2rem] md:rounded-[4rem] shadow-2xl relative z-10 overflow-hidden flex flex-col md:flex-row border-2 md:border-4 theme-border h-fit max-h-[92vh]">
+            <div class="w-full md:w-1/2 p-6 md:p-12 flex flex-col items-center justify-center bg-white relative border-b md:border-b-0 md:border-r border-slate-50">
+                <div id="modal-image-container" class="phone-img-container transition-all duration-500 transform"></div>
+                <h3 id="modal-phone-name" class="mt-4 md:mt-12 text-xl md:text-3xl font-black text-center tracking-tighter uppercase italic"></h3>
             </div>
-            <div class="w-full md:w-1/2 p-12 overflow-y-auto">
-                <div class="mb-10">
-                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">01. Select Color</p>
-                    <div id="modal-color-picker" class="flex flex-wrap gap-5"></div>
+            <div class="w-full md:w-1/2 p-6 md:p-12 overflow-y-auto">
+                <div class="mb-6 md:mb-10">
+                    <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">01. Select Color</p>
+                    <div id="modal-color-picker" class="flex flex-wrap gap-3 md:gap-5"></div>
                 </div>
-                <div class="mb-10">
-                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">02. Capacity</p>
-                    <div id="modal-storage-picker" class="grid grid-cols-2 gap-4"></div>
+                <div class="mb-6 md:mb-10">
+                    <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">02. Capacity</p>
+                    <div id="modal-storage-picker" class="grid grid-cols-2 gap-2 md:gap-4"></div>
                 </div>
-                <div class="space-y-5 mb-12">
-                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">03. Shipping Details</p>
-                    <input id="user-name" type="text" placeholder="Full Name" class="w-full border-2 border-slate-100 rounded-2xl px-8 py-5 outline-none focus:theme-border transition-all shadow-sm bg-white">
-                    <input id="user-address" type="text" placeholder="Street Address, City" class="w-full border-2 border-slate-100 rounded-2xl px-8 py-5 outline-none focus:theme-border transition-all shadow-sm bg-white">
+                <div class="space-y-3 md:space-y-5 mb-8 md:mb-12">
+                    <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">03. Shipping</p>
+                    <input id="user-name" type="text" placeholder="Full Name" class="w-full border-2 border-slate-100 rounded-xl md:rounded-2xl px-4 md:px-8 py-3 md:py-5 outline-none focus:theme-border transition-all text-sm">
+                    <input id="user-address" type="text" placeholder="Street Address" class="w-full border-2 border-slate-100 rounded-xl md:rounded-2xl px-4 md:px-8 py-3 md:py-5 outline-none focus:theme-border transition-all text-sm">
                 </div>
-                <button onclick="placeOrder()" class="w-full theme-bg text-white py-6 rounded-[2.5rem] font-black text-2xl shadow-xl hover:-translate-y-1 active:scale-95 transition-all">CONFIRM ORDER</button>
+                <button onclick="placeOrder()" class="w-full theme-bg text-white py-4 md:py-6 rounded-xl md:rounded-[2.5rem] font-black text-lg md:text-2xl shadow-xl active:scale-95 transition-all">CONFIRM ORDER</button>
             </div>
         </div>
     </div>
 
     <!-- SETTINGS MENU -->
-    <div id="settings-menu" class="fixed right-0 top-0 h-full w-80 bg-white z-[110] shadow-[-20px_0_50px_rgba(0,0,0,0.05)] p-8 border-l-8 theme-border">
-        <div class="flex justify-between items-center mb-12">
-            <h3 class="text-2xl font-black uppercase italic theme-text tracking-tighter">Theme Editor</h3>
-            <button onclick="toggleSettings()" class="text-4xl leading-none">&times;</button>
+    <div id="settings-menu" class="fixed right-0 top-0 h-full w-72 md:w-80 bg-white z-[110] shadow-2xl p-6 md:p-8 border-l-8 theme-border">
+        <div class="flex justify-between items-center mb-8 md:mb-12">
+            <h3 class="text-xl md:text-2xl font-black uppercase italic theme-text tracking-tighter">Theme Editor</h3>
+            <button onclick="toggleSettings()" class="text-3xl leading-none">&times;</button>
         </div>
-        <p class="mb-6 font-bold text-slate-400 uppercase text-[10px] tracking-widest">Accent Color</p>
-        <div class="grid grid-cols-4 gap-4 mb-12">
-            <div onclick="changeTheme('#ef4444')" class="w-12 h-12 rounded-2xl bg-red-500 cursor-pointer shadow-sm hover:scale-110 transition-all"></div>
-            <div onclick="changeTheme('#3b82f6')" class="w-12 h-12 rounded-2xl bg-blue-500 cursor-pointer shadow-sm hover:scale-110 transition-all"></div>
-            <div onclick="changeTheme('#10b981')" class="w-12 h-12 rounded-2xl bg-emerald-500 cursor-pointer shadow-sm hover:scale-110 transition-all"></div>
-            <div onclick="changeTheme('#000000')" class="w-12 h-12 rounded-2xl bg-black cursor-pointer shadow-sm hover:scale-110 transition-all"></div>
-            <div onclick="changeTheme('#ec4899')" class="w-12 h-12 rounded-2xl bg-pink-500 cursor-pointer shadow-sm hover:scale-110 transition-all"></div>
-            <div onclick="changeTheme('#8b5cf6')" class="w-12 h-12 rounded-2xl bg-violet-500 cursor-pointer shadow-sm hover:scale-110 transition-all"></div>
-            <div onclick="changeTheme('#64748b')" class="w-12 h-12 rounded-2xl bg-slate-500 cursor-pointer shadow-sm hover:scale-110 transition-all"></div>
-            <div onclick="changeTheme('#06b6d4')" class="w-12 h-12 rounded-2xl bg-cyan-500 cursor-pointer shadow-sm hover:scale-110 transition-all"></div>
+        <p class="mb-4 font-bold text-slate-400 uppercase text-[10px] tracking-widest text-center">Accent Color</p>
+        <div class="grid grid-cols-4 gap-3 md:gap-4 mb-8 md:mb-12">
+            <div onclick="changeTheme('#ef4444')" class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-red-500 cursor-pointer shadow-sm"></div>
+            <div onclick="changeTheme('#3b82f6')" class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-blue-500 cursor-pointer shadow-sm"></div>
+            <div onclick="changeTheme('#10b981')" class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-emerald-500 cursor-pointer shadow-sm"></div>
+            <div onclick="changeTheme('#000000')" class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-black cursor-pointer shadow-sm"></div>
+            <div onclick="changeTheme('#ec4899')" class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-pink-500 cursor-pointer shadow-sm"></div>
+            <div onclick="changeTheme('#8b5cf6')" class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-violet-500 cursor-pointer shadow-sm"></div>
+            <div onclick="changeTheme('#64748b')" class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-slate-500 cursor-pointer shadow-sm"></div>
+            <div onclick="changeTheme('#06b6d4')" class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-cyan-500 cursor-pointer shadow-sm"></div>
         </div>
     </div>
 
     <!-- FAB Settings -->
-    <button onclick="toggleSettings()" class="fixed bottom-6 right-6 z-[105] w-16 h-16 theme-bg text-white rounded-full flex items-center justify-center shadow-2xl hover:rotate-90 transition-all duration-500">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+    <button onclick="toggleSettings()" class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[105] w-12 h-12 md:w-16 md:h-16 theme-bg text-white rounded-full flex items-center justify-center shadow-2xl transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
     </button>
 
     <script>
@@ -386,8 +350,8 @@
             const container = document.getElementById('brand-slider-container');
             container.innerHTML = brands.map((b, i) => `
                 <div class="brand-card" id="brand-${i}" onclick="handleBrandClick(${i})">
-                    ${b.img ? `<img src="${b.img}" class="brand-logo-img" alt="${b.name}">` : `<span class="text-8xl font-black mb-4">${b.logo}</span>`}
-                    <span class="text-2xl font-black uppercase tracking-widest mt-6 text-slate-800">${b.name}</span>
+                    ${b.img ? `<img src="${b.img}" class="brand-logo-img" alt="${b.name}">` : `<span class="text-6xl md:text-8xl font-black mb-4">${b.logo}</span>`}
+                    <span class="text-xl md:text-2xl font-black uppercase tracking-widest mt-4 md:mt-6 text-slate-800">${b.name}</span>
                 </div>
             `).join('');
             updateSlider();
@@ -402,6 +366,7 @@
         function updateSlider() {
             brands.forEach((_, i) => {
                 const card = document.getElementById(`brand-${i}`);
+                if (!card) return;
                 card.className = 'brand-card';
                 if (i === currentIdx) card.classList.add('active');
                 else if (i === (currentIdx - 1 + brands.length) % brands.length) card.classList.add('prev');
@@ -418,7 +383,7 @@
             const handleStart = (x) => { startX = x; isDragging = false; };
             const handleEnd = (x) => {
                 const diff = startX - x;
-                if (Math.abs(diff) > 50) { isDragging = true; moveBrand(diff > 0 ? 1 : -1); }
+                if (Math.abs(diff) > 40) { isDragging = true; moveBrand(diff > 0 ? 1 : -1); }
             };
             slider.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX), {passive: true});
             slider.addEventListener('touchend', (e) => handleEnd(e.changedTouches[0].clientX), {passive: true});
@@ -439,13 +404,13 @@
         function renderPhones() {
             const grid = document.querySelector('#phone-catalog > div');
             grid.innerHTML = phones.map(p => `
-                <div onclick="openModal(${p.id})" class="bg-white rounded-[3.5rem] p-10 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer group border border-slate-50 hover:theme-border">
-                    <div class="aspect-[3/4] flex items-center justify-center mb-8 bg-white rounded-[3rem] p-6 border border-slate-50">
+                <div onclick="openModal(${p.id})" class="bg-white rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-10 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer group border border-slate-50 hover:theme-border">
+                    <div class="aspect-[3/4] flex items-center justify-center mb-6 md:mb-8 bg-white rounded-[1.5rem] md:rounded-[3rem] p-4 md:p-6 border border-slate-50">
                         ${getPhonePreview(p)}
                     </div>
-                    <h4 class="text-2xl font-black text-center text-slate-800 group-hover:theme-text transition-colors tracking-tighter italic uppercase">${p.name}</h4>
-                    <div class="flex justify-center gap-2 mt-6">
-                        ${p.variants.map(v => `<div class="w-4 h-4 rounded-full shadow-inner border border-slate-200" style="background-color: ${v.color}" title="${v.name || ''}"></div>`).join('')}
+                    <h4 class="text-lg md:text-2xl font-black text-center text-slate-800 group-hover:theme-text transition-colors tracking-tighter italic uppercase">${p.name}</h4>
+                    <div class="flex justify-center gap-2 mt-4 md:mt-6">
+                        ${p.variants.map(v => `<div class="w-3 h-3 md:w-4 md:h-4 rounded-full shadow-inner border border-slate-200" style="background-color: ${v.color}"></div>`).join('')}
                     </div>
                 </div>
             `).join('');
@@ -454,7 +419,7 @@
         function getPhonePreview(phone) {
             const variant = phone.variants[0];
             if (variant.img) return `<img src="${variant.img}" class="phone-display-img" alt="${phone.name}">`;
-            return createPhoneSvg(variant.color, 120);
+            return createPhoneSvg(variant.color, 100);
         }
 
         function createPhoneSvg(color, h = 150) {
@@ -463,8 +428,6 @@
                 <svg width="${w}" height="${h}" viewBox="0 0 100 200" class="phone-display-img">
                     <rect x="5" y="5" width="90" height="190" rx="14" fill="${color}" />
                     <rect x="12" y="12" width="76" height="176" rx="10" fill="rgba(0,0,0,0.05)" />
-                    <rect x="35" y="10" width="30" height="6" rx="3" fill="#111" />
-                    <rect x="30" y="30" width="40" height="40" rx="20" fill="white" opacity="0.1" />
                 </svg>`;
         }
 
@@ -474,11 +437,11 @@
             updateModalMedia(p.variants[0]);
             document.getElementById('modal-color-picker').innerHTML = p.variants.map(v => `
                 <div onclick="updateModalMedia({color: '${v.color}', img: '${v.img}'}, event)" 
-                     class="w-12 h-12 rounded-full cursor-pointer border-4 border-transparent hover:scale-110 transition-all shadow-md active:scale-90" 
-                     style="background-color: ${v.color}" title="${v.name || ''}"></div>`).join('');
+                     class="w-8 h-8 md:w-12 md:h-12 rounded-full cursor-pointer border-4 border-transparent hover:scale-110 transition-all shadow-md" 
+                     style="background-color: ${v.color}"></div>`).join('');
             document.getElementById('modal-storage-picker').innerHTML = p.storage.map((size, idx) => `
                 <button onclick="handleStorageSelection('${size}', event)" 
-                        class="storage-btn border-2 ${idx === 0 ? 'theme-border theme-text active' : 'border-slate-100 text-slate-400'} rounded-2xl py-4 font-bold bg-white hover:border-slate-200">${size}</button>`).join('');
+                        class="storage-btn border-2 ${idx === 0 ? 'theme-border theme-text active' : 'border-slate-100 text-slate-400'} rounded-xl md:rounded-2xl py-3 md:py-4 font-bold bg-white text-xs md:text-base">${size}</button>`).join('');
             selectedStorageValue = p.storage[0];
             document.getElementById('order-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -497,12 +460,10 @@
         function updateModalMedia(variant, event) {
             const container = document.getElementById('modal-image-container');
             container.style.opacity = '0';
-            container.style.transform = 'scale(1.05)';
             setTimeout(() => {
                 if (variant.img) container.innerHTML = `<img src="${variant.img}" class="phone-display-img" alt="Selected">`;
-                else container.innerHTML = createPhoneSvg(variant.color, 280);
+                else container.innerHTML = createPhoneSvg(variant.color, 240);
                 container.style.opacity = '1';
-                container.style.transform = 'scale(1.1)';
             }, 300);
             if (event) {
                 document.querySelectorAll('#modal-color-picker div').forEach(d => d.style.borderColor = 'transparent');
@@ -513,21 +474,15 @@
         function closeModal() { document.getElementById('order-modal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
 
         function placeOrder() {
-            if(!document.getElementById('user-name').value || !document.getElementById('user-address').value) return alert('Enter details');
+            if(!document.getElementById('user-name').value || !document.getElementById('user-address').value) return;
             closeModal();
             document.getElementById('phone-catalog').classList.add('hidden');
             document.getElementById('main-header').classList.add('hidden');
             document.getElementById('order-success').classList.remove('hidden');
             
-            // Start Path Animation
             const path = document.getElementById('delivery-path');
             path.classList.add('animate-path');
-            
-            // Start Van Animation on Path
             const van = document.getElementById('courier-van');
-            van.style.animation = 'none';
-            void van.offsetWidth; // trigger reflow
-            van.style.animation = null;
             van.classList.add('van-on-path');
         }
 
